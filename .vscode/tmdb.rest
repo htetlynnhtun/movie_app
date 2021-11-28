@@ -1,0 +1,9 @@
+@baseUrl = https://api.themoviedb.org/3
+@apiKey = fa0a7c3829770be03e723f3d1b5fd96a
+
+GET {{baseUrl}}/movie/now_playing?api_key={{apiKey}}&page=1
+
+###
+
+GET {{baseUrl}}/movie/580489?api_key={{apiKey}}
+
