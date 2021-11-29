@@ -14,17 +14,35 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<MovieState>(context, listen: false).getMovieDetail(id);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Detail page')),
-      body: Consumer<MovieState>(
-        builder: (context, movieState, child) {
-          final movie = movieState.currentMovie;
-          if (movie == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Text(movie.title);
-        },
-      ),
+    return Consumer<MovieState>(
+      builder: (context, movieState, child) {
+        final movie = movieState.currentMovie;
+        final isAlreadyFav = movieState.isAlreadyFav(movie?.id ?? -1);
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Detail page'),
+            actions: [
+              IconButton(
+                onPressed: movie == null
+                    ? null
+                    : () {
+                        if (isAlreadyFav) {
+                          movieState.deleteMovieFromFav(id);
+                        } else {
+                          movieState.addMovieToFav(movie);
+                        }
+                      },
+                icon: Icon(
+                  isAlreadyFav ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          body: movie != null ? Text(movie.title) : const CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

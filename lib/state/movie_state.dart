@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:movie_app/data/models/movie_model.dart';
 import 'package:movie_app/data/models/movie_model_impl.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
+import 'package:movie_app/persistance/movie_dao.dart';
 
 class MovieState extends ChangeNotifier {
   final MovieModel _movieModel = MovieModelImpl();
@@ -13,6 +16,7 @@ class MovieState extends ChangeNotifier {
       nowPlayingMovies = value;
       notifyListeners();
     });
+    MovieDao().getMovieBox().listenable().addListener(notifyListeners);
   }
 
   void getMovieDetail(int id) {
@@ -25,5 +29,23 @@ class MovieState extends ChangeNotifier {
   void clearCurrentMovie() {
     currentMovie = null;
     notifyListeners();
+  }
+
+  void addMovieToFav(MovieVo movie) {
+    _movieModel.addMovieToFav(movie);
+  }
+
+  void deleteMovieFromFav(int id) {
+    _movieModel.deleteMovieFromFav(id);
+  }
+
+  bool isAlreadyFav(int id) {
+    return _movieModel.isAlreadyFav(id);
+  }
+
+  @override
+  void dispose() {
+    MovieDao().getMovieBox().listenable().removeListener(notifyListeners);
+    super.dispose();
   }
 }
