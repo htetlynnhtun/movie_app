@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/vos/movie_vo.dart';
+import 'package:movie_app/domain/movie.dart';
 
 class MovieItem extends StatelessWidget {
-  final MovieVo movie;
+  final Movie movie;
   static const imageBaseUrl = "http://image.tmdb.org/t/p/w400/";
 
   const MovieItem({

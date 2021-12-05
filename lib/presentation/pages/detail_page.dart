@@ -1,48 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:movie_app/state/movie_state.dart';
+import 'package:movie_app/domain/movie.dart';
 
 class DetailPage extends StatelessWidget {
-  final int id;
+  final Movie movie;
   const DetailPage({
     Key? key,
-    required this.id,
+    required this.movie,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<MovieState>(context, listen: false).getMovieDetail(id);
-
-    return Consumer<MovieState>(
-      builder: (context, movieState, child) {
-        final movie = movieState.currentMovie;
-        final isAlreadyFav = movieState.isAlreadyFav(movie?.id ?? -1);
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Detail page'),
-            actions: [
-              IconButton(
-                onPressed: movie == null
-                    ? null
-                    : () {
-                        if (isAlreadyFav) {
-                          movieState.deleteMovieFromFav(id);
-                        } else {
-                          movieState.addMovieToFav(movie);
-                        }
-                      },
-                icon: Icon(
-                  isAlreadyFav ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          body: movie != null ? Text(movie.title) : const CircularProgressIndicator(),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detail page'),
+      ),
+      body: Text(movie.title),
     );
   }
 }
